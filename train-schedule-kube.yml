@@ -41,3 +41,23 @@ spec:
           initialDelaySeconds: 15
           timeoutSeconds: 1
           periodSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+            
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: train-schedule-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: train-schedule-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
